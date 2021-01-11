@@ -161,264 +161,290 @@ class _InputPageState extends State<InputPage> {
 
   void resetFields() {
     formKey.currentState.reset();
-    print('Pressed RESET');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text('Pace Calculator'),
       ),
-      body: Form(
-        key: formKey,
-        child: Container(
-          margin: EdgeInsets.only(top: 20.0),
+      body: SingleChildScrollView(
+        reverse: true,
+        child: Form(
+          key: formKey,
           child: Column(
             children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    Text(
-                      'Distance',
-                      style: kHeaderTextStyle,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: SelectorBox(
-                            boxText: 'Miles',
-                            onTap: () {
-                              setState(() {
-                                selectedUnits = Units.miles;
-                              });
-                            },
-                            color: selectedUnits == Units.miles
-                                ? kAccentColor
-                                : kSelectorBoxInactiveColor,
-                          ),
-                        ),
-                        Expanded(
-                          child: SelectorBox(
-                            boxText: 'Kilometers',
-                            onTap: () {
-                              setState(() {
-                                selectedUnits = Units.km;
-                              });
-                            },
-                            color: selectedUnits == Units.km
-                                ? kAccentColor
-                                : kSelectorBoxInactiveColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                  labelText: "Distance",
-                                  border: OutlineInputBorder(),
-                                  labelStyle: kHeaderTextStyle),
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r'^(\d+)?\.?\d{0,2}'))
-                              ],
-                              onSaved: (input) => distance = input,
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    Text(
-                      'Total Time',
-                      style: kHeaderTextStyle,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                  labelText: "Hours",
-                                  border: OutlineInputBorder(),
-                                  labelStyle: kHeaderTextStyle),
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
-                              onSaved: (input) => totalTimeHours = input,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          ':',
-                          style: kHeaderTextStyle,
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                  labelText: "Minutes",
-                                  border: OutlineInputBorder(),
-                                  labelStyle: kHeaderTextStyle),
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r'\b([0-9]|[0-5]\d|60)\b'))
-                              ],
-                              onSaved: (input) => totalTimeMinutes = input,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          ':',
-                          style: kHeaderTextStyle,
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                  labelText: "Seconds",
-                                  border: OutlineInputBorder(),
-                                  labelStyle: kHeaderTextStyle),
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r'\b([0-9]|[0-5]\d|60)\b'))
-                              ],
-                              onSaved: (input) => totalTimeSeconds = input,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    Text(
-                      'Pace',
-                      style: kHeaderTextStyle,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                  labelText: "Hours",
-                                  border: OutlineInputBorder(),
-                                  labelStyle: kHeaderTextStyle),
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r'\b([0-9]|[0-9]\d|99)\b'))
-                              ],
-                              onSaved: (input) => paceHours = input,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          ':',
-                          style: kHeaderTextStyle,
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                  labelText: "Minutes",
-                                  border: OutlineInputBorder(),
-                                  labelStyle: kHeaderTextStyle),
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r'\b([0-9]|[0-5]\d|60)\b'))
-                              ],
-                              onSaved: (input) => paceMinutes = input,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          ':',
-                          style: kHeaderTextStyle,
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                  labelText: "Seconds",
-                                  border: OutlineInputBorder(),
-                                  labelStyle: kHeaderTextStyle),
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r'\b([0-9]|[0-5]\d|60)\b'))
-                              ],
-                              onSaved: (input) => paceSeconds = input,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: Text(
-                            selectedUnits == Units.miles
-                                ? 'per mile'
-                                : 'per km',
-                            style: kAlertSmallItalicStyle,
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              Row(
+              Column(
                 children: [
-                  Expanded(
-                    child: BottomButton(
-                      onTap: resetFields,
-                      buttonTitle: 'RESET',
-                      buttonColor: kBottomButtonColorReset,
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: Text(
+                            'Distance',
+                            style: kHeaderTextStyle,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  Expanded(
-                    flex: 3,
-                    child: BottomButton(
-                      onTap: calculate,
-                      buttonTitle: 'CALCULATE',
-                      buttonColor: kAccentColor,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: SelectorBox(
+                          boxText: 'Miles',
+                          onTap: () {
+                            setState(() {
+                              selectedUnits = Units.miles;
+                            });
+                          },
+                          color: selectedUnits == Units.miles
+                              ? kAccentColor
+                              : kSelectorBoxInactiveColor,
+                        ),
+                      ),
+                      Expanded(
+                        child: SelectorBox(
+                          boxText: 'Kilometers',
+                          onTap: () {
+                            setState(() {
+                              selectedUnits = Units.km;
+                            });
+                          },
+                          color: selectedUnits == Units.km
+                              ? kAccentColor
+                              : kSelectorBoxInactiveColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                                labelText: "Distance",
+                                border: OutlineInputBorder(),
+                                labelStyle: kHeaderTextStyle),
+                            keyboardType: TextInputType.numberWithOptions(
+                                signed: false, decimal: true),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'^(\d+)?\.?\d{0,2}'))
+                            ],
+                            onSaved: (input) => distance = input,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: Text(
+                            'Total Time',
+                            style: kHeaderTextStyle,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                                labelText: "Hours",
+                                border: OutlineInputBorder(),
+                                labelStyle: kHeaderTextStyle),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            onSaved: (input) => totalTimeHours = input,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        ':',
+                        style: kHeaderTextStyle,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                                labelText: "Minutes",
+                                border: OutlineInputBorder(),
+                                labelStyle: kHeaderTextStyle),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'\b([0-9]|[0-5]\d|60)\b'))
+                            ],
+                            onSaved: (input) => totalTimeMinutes = input,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        ':',
+                        style: kHeaderTextStyle,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                                labelText: "Seconds",
+                                border: OutlineInputBorder(),
+                                labelStyle: kHeaderTextStyle),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'\b([0-9]|[0-5]\d|60)\b'))
+                            ],
+                            onSaved: (input) => totalTimeSeconds = input,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
-              )
+              ),
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: Text(
+                            'Pace',
+                            style: kHeaderTextStyle,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                                labelText: "Hours",
+                                border: OutlineInputBorder(),
+                                labelStyle: kHeaderTextStyle),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'\b([0-9]|[0-9]\d|99)\b'))
+                            ],
+                            onSaved: (input) => paceHours = input,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        ':',
+                        style: kHeaderTextStyle,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                                labelText: "Minutes",
+                                border: OutlineInputBorder(),
+                                labelStyle: kHeaderTextStyle),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'\b([0-9]|[0-5]\d|60)\b'))
+                            ],
+                            onSaved: (input) => paceMinutes = input,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        ':',
+                        style: kHeaderTextStyle,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                                labelText: "Seconds",
+                                border: OutlineInputBorder(),
+                                labelStyle: kHeaderTextStyle),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'\b([0-9]|[0-5]\d|60)\b'))
+                            ],
+                            onSaved: (input) => paceSeconds = input,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            right: 8.0,
+                            bottom: MediaQuery.of(context).viewInsets.bottom),
+                        child: Text(
+                          selectedUnits == Units.miles ? 'per mile' : 'per km',
+                          style: kAlertSmallItalicStyle,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: Row(
+        children: [
+          Expanded(
+            child: BottomButton(
+              onTap: resetFields,
+              buttonTitle: 'RESET',
+              buttonColor: kBottomButtonColorReset,
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: BottomButton(
+              onTap: calculate,
+              buttonTitle: 'CALCULATE',
+              buttonColor: kAccentColor,
+            ),
+          ),
+        ],
       ),
     );
   }
