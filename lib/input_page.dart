@@ -17,7 +17,7 @@ class _InputPageState extends State<InputPage> {
   final formKey = GlobalKey<FormState>();
 
   //FormTextField variables. Strings so they can be saved, convert to int later.
-  String _distance;
+  String distance;
   String totalTimeHours;
   String totalTimeMinutes;
   String totalTimeSeconds;
@@ -42,18 +42,16 @@ class _InputPageState extends State<InputPage> {
   }
 
   void calculate() {
-    print('Pressed CALCULATE');
     formKey.currentState.save();
-    print('field values saved!');
 
     bool hasDistance = false;
     bool hasTotalTime = false;
     bool hasPace = false;
 
     //some sort of distance is entered
-    if (_distance != '') {
+    if (distance != '') {
       hasDistance = true;
-      iDistance = double.parse(_distance);
+      iDistance = double.parse(distance);
     }
     // some sort of total time is entered.
     if (totalTimeHours != '' ||
@@ -70,7 +68,7 @@ class _InputPageState extends State<InputPage> {
     // some sort of pace is entered.
     if (paceHours != '' || paceMinutes != '' || paceSeconds != '') {
       iTotalPaceInSeconds =
-          convertToSeconds(totalTimeHours, totalTimeMinutes, totalTimeSeconds);
+          convertToSeconds(paceHours, paceMinutes, paceSeconds);
       hasPace = true;
     }
 
@@ -84,15 +82,23 @@ class _InputPageState extends State<InputPage> {
 
     //user did not enter proper number of fields.
     if (variableCount != 2) {
-      print('Please enter 2 of 3 sections.');
+      //print('Please enter 2 of 3 sections.');
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CalculatorAlert(
+              title: 'WHOOPS!',
+              content: 'Enter data in ANY TWO of: Distance, Total Time, Pace',
+              secondaryText: 'please try again...',
+            );
+          });
     }
 
     //Calculate the required pace.
-    if (hasDistance && hasTotalTime) {
-      print('user entered distance and total time.');
+    else if (hasDistance && hasTotalTime) {
+      //print('user entered distance and total time.');
 
       int pace = (iTotalTimeInSeconds / iDistance).toInt();
-      print('Pace: $pace');
       String paceFormatted =
           Duration(seconds: pace).toString().split('.').first.padLeft(8, '0');
 
@@ -107,11 +113,49 @@ class _InputPageState extends State<InputPage> {
             );
           });
     } else if (hasDistance && hasPace) {
-      print('user entered distance and pace.');
+      // print('user entered distance and pace. Get Total time');
+      int totalTime = (iDistance * iTotalPaceInSeconds).toInt();
+      String totalTimeFormatted = Duration(seconds: totalTime)
+          .toString()
+          .split('.')
+          .first
+          .padLeft(8, '0');
+
+      String units = selectedUnits == Units.miles ? 'miles' : 'km';
+
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CalculatorAlert(
+              title: 'TOTAL TIME',
+              content: totalTimeFormatted,
+              secondaryText: 'to run $distance $units',
+            );
+          });
     } else if (hasTotalTime && hasPace) {
-      print('user entered total time and pace');
+      //print('user entered total time and pace. Get distance');
+      double distanceTraveled = (iTotalTimeInSeconds / iTotalPaceInSeconds);
+      String units = selectedUnits == Units.miles ? 'miles' : 'km';
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CalculatorAlert(
+              title: 'DISTANCE',
+              content: distanceTraveled.toStringAsFixed(1),
+              secondaryText: '$units traveled',
+            );
+          });
     } else {
       print('error with field values.');
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CalculatorAlert(
+              title: 'WHOOPS...',
+              content: 'We had a problem with the values you entered.',
+              secondaryText: 'Sorry... please try again!',
+            );
+          });
     }
   }
 
@@ -185,7 +229,7 @@ class _InputPageState extends State<InputPage> {
                                 FilteringTextInputFormatter.allow(
                                     RegExp(r'^(\d+)?\.?\d{0,2}'))
                               ],
-                              onSaved: (input) => _distance = input,
+                              onSaved: (input) => distance = input,
                             ),
                           ),
                         ),
@@ -254,7 +298,8 @@ class _InputPageState extends State<InputPage> {
                                   labelStyle: kHeaderTextStyle),
                               keyboardType: TextInputType.number,
                               inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'\b([0-9]|[0-5]\d|60)\b'))
                               ],
                               onSaved: (input) => totalTimeSeconds = input,
                             ),
@@ -284,7 +329,8 @@ class _InputPageState extends State<InputPage> {
                                   labelStyle: kHeaderTextStyle),
                               keyboardType: TextInputType.number,
                               inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'\b([0-9]|[0-9]\d|99)\b'))
                               ],
                               onSaved: (input) => paceHours = input,
                             ),
@@ -304,7 +350,8 @@ class _InputPageState extends State<InputPage> {
                                   labelStyle: kHeaderTextStyle),
                               keyboardType: TextInputType.number,
                               inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'\b([0-9]|[0-5]\d|60)\b'))
                               ],
                               onSaved: (input) => paceMinutes = input,
                             ),
@@ -324,7 +371,8 @@ class _InputPageState extends State<InputPage> {
                                   labelStyle: kHeaderTextStyle),
                               keyboardType: TextInputType.number,
                               inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'\b([0-9]|[0-5]\d|60)\b'))
                               ],
                               onSaved: (input) => paceSeconds = input,
                             ),
@@ -332,6 +380,20 @@ class _InputPageState extends State<InputPage> {
                         ),
                       ],
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Text(
+                            selectedUnits == Units.miles
+                                ? 'per mile'
+                                : 'per km',
+                            style: kAlertSmallItalicStyle,
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),
