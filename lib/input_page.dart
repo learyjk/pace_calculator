@@ -170,7 +170,7 @@ class _InputPageState extends State<InputPage> {
       resizeToAvoidBottomInset: false,
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-        title: Text('Pace Calculator'),
+        title: Text('Super Pace Calculator'),
         actions: [
           IconButton(
             icon: Icon(Icons.info),
