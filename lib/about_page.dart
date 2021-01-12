@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'constants.dart';
 
 class AboutPage extends StatelessWidget {
-  String year = DateTime.now().year.toString();
+  final String year = DateTime.now().year.toString();
 
   _launchURL() async {
     const url = 'https://keeganleary.com';

@@ -99,7 +99,7 @@ class _InputPageState extends State<InputPage> {
     else if (hasDistance && hasTotalTime) {
       //print('user entered distance and total time.');
 
-      int pace = (iTotalTimeInSeconds / iDistance).toInt();
+      int pace = (iTotalTimeInSeconds ~/ iDistance);
       String paceFormatted =
           Duration(seconds: pace).toString().split('.').first.padLeft(8, '0');
 

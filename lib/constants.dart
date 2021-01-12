@@ -19,4 +19,4 @@ const kLinkStyle = TextStyle(
   color: kAccentColor,
 );
 const kBylineStyle = TextStyle(
-    fontSize: 25.0, fontWeight: FontWeight.normal, fontStyle: FontStyle.italic);
+    fontSize: 20.0, fontWeight: FontWeight.normal, fontStyle: FontStyle.italic);
