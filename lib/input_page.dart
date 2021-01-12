@@ -4,6 +4,7 @@ import 'package:pace_calculator/constants.dart';
 import 'bottom_button.dart';
 import 'calculator_alert.dart';
 import 'selector_box.dart';
+import 'about_page.dart';
 
 enum Units { miles, km }
 
@@ -170,6 +171,17 @@ class _InputPageState extends State<InputPage> {
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text('Pace Calculator'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.info),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AboutPage()),
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         reverse: true,

@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData.dark(),
         home: InputPage(),
       ),

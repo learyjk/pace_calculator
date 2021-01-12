@@ -13,3 +13,10 @@ const kHeaderTextStyle = TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold);
 const kAlertTitleStyle = TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold);
 const kAlertSmallItalicStyle = TextStyle(
     fontSize: 15.0, fontWeight: FontWeight.normal, fontStyle: FontStyle.italic);
+const kLinkStyle = TextStyle(
+  fontSize: 25.0,
+  decoration: TextDecoration.underline,
+  color: kAccentColor,
+);
+const kBylineStyle = TextStyle(
+    fontSize: 25.0, fontWeight: FontWeight.normal, fontStyle: FontStyle.italic);
